@@ -1,0 +1,13 @@
+.color {
+  display: flex;
+  background-color: rgb(243, 203, 72);
+  /* margin-top: 15px; */
+}
+
+.card {
+  display: flex;
+  height: 250px;
+  width: 250px;
+  /* border-radius: 50%; */
+  margin: 0 0px;
+}
