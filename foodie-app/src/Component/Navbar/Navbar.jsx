@@ -1,7 +1,7 @@
 import React from "react";
 import Style from "./Navbar.module.scss";
-// import Footer from "../Footer";
 import Logo from "../../Assets/Images/Logo.jpg";
+import { NavLink } from "react-router-dom";
 function Navbar() {
   return (
     <div className={Style.main_container}>
@@ -20,15 +20,36 @@ function Navbar() {
       </div>
       <ul className={Style.Navigation_list}>
         <li>
-          <i className="fas fa-house-user">&nbsp;Home</i>
+          <NavLink
+            to="/"
+            exact
+            style={{ textDecoration: "none", color: "black" }}
+            activeClassName={Style.activelink}
+          >
+            <i className="fas fa-house-user">&nbsp;Home</i>
+          </NavLink>
         </li>
         <li>
-          <i className="fas fa-user-lock">&nbsp;SignIn</i>
+          <NavLink
+            to="/signIn"
+            exact
+            style={{ textDecoration: "none", color: "black" }}
+            activeClassName={Style.activelink}
+          >
+            {" "}
+            <i className="fas fa-user-lock">&nbsp;SignIn</i>
+          </NavLink>
         </li>
 
         <li>
-          {" "}
-          <i className="fas fa-cart-plus">&nbsp;Cart</i>
+          <NavLink
+            to="/userCart"
+            exact
+            style={{ textDecoration: "none", color: "black" }}
+            activeClassName={Style.activelink}
+          >
+            <i className="fas fa-cart-plus">&nbsp;Cart</i>
+          </NavLink>
         </li>
       </ul>
     </div>
