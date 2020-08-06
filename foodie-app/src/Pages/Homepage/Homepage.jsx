@@ -8,6 +8,7 @@ import Advertisement from "../../Component/Advertisement/AdverTisement";
 import Footer from "../../Component/Footer/Footer";
 class Homepage extends Component {
   render() {
+    console.log(this.props);
     return (
       <>
         <div
@@ -23,6 +24,7 @@ class Homepage extends Component {
             <UserSearchInputBar
               type={"text"}
               placeholder={"Search Restaurants by location..."}
+              name="locationSearch"
             />
 
             <h3 style={{ textAlign: "center", marginTop: "60px" }}>
@@ -31,6 +33,7 @@ class Homepage extends Component {
             <UserSearchInputBar
               type={"text"}
               placeholder={"Search Restaurants by Name..."}
+              name="restaurantSearch"
             />
           </div>
         </div>

@@ -7,6 +7,7 @@ import ScrollToTopButton from "./Component/ScrollToTopButton/ScrollToTopButton";
 import SignIn_SignUp from "./Pages/Sign_In-Sign_UP-Page/SignIn_SignUp";
 import UserCart from "./Pages/UserCartPage/UserCart";
 import Page_Not_Found from "./Pages/PageNotFound/404_Page";
+import RestaurantsPage from "./Pages/RestaurantsPage/Restaurants";
 function App() {
   return (
     <div className="App">
@@ -16,6 +17,8 @@ function App() {
         <Route path="/" exact component={Homepage} />
         <Route path="/signIn" exact component={SignIn_SignUp} />
         <Route path="/userCart" exact component={UserCart} />
+        <Route path="/userQueryRestaurants" exact component={RestaurantsPage} />
+
         <Route path="*" component={Page_Not_Found} />
       </Switch>
     </div>

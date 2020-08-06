@@ -1,8 +1,15 @@
 import Style from "./UserSearchInputBar.module.scss";
 import PlacesAutocomplete from "react-places-autocomplete";
 import React, { Component } from "react";
+import userQuery from "../../Redux/Actions/ActionsCreator/UserSearchActionCreators";
+import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
+class UserSearchInputBar extends Component {
+  state = {
+    location_query: "",
+    restaurant_query: "",
+  };
 
-export default class UserSearchInputBar extends Component {
   // constructor(props) {
   //   super(props);
   //   this.state = { address: "" };
@@ -11,12 +18,38 @@ export default class UserSearchInputBar extends Component {
   // handleChange = address => {
   //   this.setState({ address });
   // };
+
   render() {
-    const { type, placeholder } = this.props;
+    const {
+      type,
+      placeholder,
+      name,
+      userQuery,
+      history,
+      getRestaurantDetails,
+    } = this.props;
+    const { location_query, restaurant_query } = this.state;
     return (
       <div className={Style.handleForm}>
-        <form className={Style.UserResponse}>
-          <input type={type} placeholder={placeholder} required name="search" />
+        <form
+          className={Style.UserResponse}
+          onSubmit={e => {
+            e.preventDefault();
+            userQuery(location_query, restaurant_query);
+            history.push("/userQueryRestaurants");
+          }}
+        >
+          <input
+            onChange={e => {
+              e.target.name == "locationSearch"
+                ? this.setState({ location_query: e.target.value })
+                : this.setState({ restaurant_query: e.target.value });
+            }}
+            type={type}
+            placeholder={placeholder}
+            required
+            name={name}
+          />
           <button type="sumbit">
             <i
               style={{ fontSize: "18px" }}
@@ -27,7 +60,7 @@ export default class UserSearchInputBar extends Component {
       </div>
 
       //   <PlacesAutocomplete
-      //     value={this.state.address}
+      //     value={this.state.address}`
       //     onChange={this.handleChange}
       //     onSelect={this.handleSelect}
       //   >
@@ -73,3 +106,12 @@ export default class UserSearchInputBar extends Component {
     );
   }
 }
+let mapDispatchToprops = dispatch => {
+  return {
+    userQuery: (locationquery, restaurantquery) =>
+      dispatch(userQuery(locationquery, restaurantquery)),
+  };
+};
+export default withRouter(
+  connect(null, mapDispatchToprops)(UserSearchInputBar)
+);
