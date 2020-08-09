@@ -5,8 +5,10 @@ import { NavLink } from "react-router-dom";
 import { auth } from "../../Firebase/Firebase.utils";
 import swal from "sweetalert";
 import { connect } from "react-redux";
+import CartDropDown from "../CartDropDown/CartDropDown";
+import toggle_DropDown from "../../Redux/Actions/ActionsCreator/CartDropDownActionCreator";
 import { ReactComponent as ShoppingIcon } from "../../Assets/Images/shopping-bag.svg";
-function Navbar({ currentUser }) {
+function Navbar({ currentUser, toggle_DropDown, ShowCartDropDown }) {
   let handleSignOut = e => {
     swal({
       title: `Hey ${
@@ -71,25 +73,25 @@ function Navbar({ currentUser }) {
         )}
 
         <li>
-          <NavLink
-            to="/userCart"
-            exact
-            style={{ textDecoration: "none", color: "black" }}
-            activeClassName={Style.activelink}
-          >
-            <div className={Style.cart_icon}>
-              <ShoppingIcon className={Style.shopping_icon} />
-              <span className={Style.item_count}>0</span>
-            </div>
-          </NavLink>
+          <div onClick={toggle_DropDown} className={Style.cart_icon}>
+            <ShoppingIcon className={Style.shopping_icon} />
+            <span className={Style.item_count}>0</span>
+          </div>
         </li>
       </ul>
+      {ShowCartDropDown && <CartDropDown />}
     </div>
   );
 }
+const mapDispatchToProps = dispatch => {
+  return {
+    toggle_DropDown: () => dispatch(toggle_DropDown()),
+  };
+};
 const mapStateToProps = state => {
   return {
     currentUser: state.CurrentUserReducer.currentUser,
+    ShowCartDropDown: state.CartDropDownReducer.ShowCartDropDown,
   };
 };
-export default connect(mapStateToProps)(Navbar);
+export default connect(mapStateToProps, mapDispatchToProps)(Navbar);
