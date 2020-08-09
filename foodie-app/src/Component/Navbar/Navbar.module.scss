@@ -39,7 +39,7 @@
 }
 
 li :hover {
-  color: whitesmoke;
+  color: whitesmoke !important;
   transition: all 0.3s linear !important;
 }
 .handleLogo {
@@ -56,4 +56,25 @@ li :hover {
   color: #1b1464 !important;
   border-radius: 5px;
   padding: 4px;
+}
+.cart_icon {
+  width: 30px;
+  height: 24px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+.shopping_icon {
+  width: 24px;
+  height: 24px;
+}
+.item_count {
+  position: absolute;
+  font-weight: 10px;
+  font-weight: bold;
+  bottom: 0;
+  margin-right: 1px;
+  margin-top: 15px;
 }

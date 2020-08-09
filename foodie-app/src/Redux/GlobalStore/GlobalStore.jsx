@@ -2,15 +2,15 @@ import { createStore, applyMiddleware, combineReducers } from "redux";
 import { composeWithDevTools } from "redux-devtools-extension";
 import logger from "redux-logger";
 import thunk from "redux-thunk";
-import RestaurantDetailsReducer from "../Reducers/RestaurantDetailsReducer";
 import UserQueryReducer from "../Reducers/UserQueryReducer";
+import CurrentUserReducer from "../Reducers/CurrentUserReducer";
 let AllReducers = combineReducers({
   UserQueryReducer,
-  RestaurantDetailsReducer,
+  CurrentUserReducer,
 });
 
 let ApplicationStore = createStore(
   AllReducers,
-  composeWithDevTools(applyMiddleware(thunk, logger))
+  composeWithDevTools(applyMiddleware(logger))
 );
 export default ApplicationStore;

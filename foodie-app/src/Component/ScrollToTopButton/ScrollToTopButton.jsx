@@ -5,7 +5,7 @@ function ScrollToTopButton() {
   window.addEventListener("scroll", () => {
     const getval = window.scrollY;
     // console.log(getval);
-    if (getval >= 1000) {
+    if (getval >= 800) {
       document.getElementById("scrollToTop").style.display = "block";
     } else {
       document.getElementById("scrollToTop").style.display = "none";

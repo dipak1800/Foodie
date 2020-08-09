@@ -2,7 +2,30 @@ import React from "react";
 import Style from "./Navbar.module.scss";
 import Logo from "../../Assets/Images/Logo.jpg";
 import { NavLink } from "react-router-dom";
-function Navbar() {
+import { auth } from "../../Firebase/Firebase.utils";
+import swal from "sweetalert";
+import { connect } from "react-redux";
+import { ReactComponent as ShoppingIcon } from "../../Assets/Images/shopping-bag.svg";
+function Navbar({ currentUser }) {
+  let handleSignOut = e => {
+    swal({
+      title: `Hey ${
+        currentUser.displayName
+          ? currentUser.displayName.toUpperCase()
+          : currentUser.name.toUpperCase()
+      } Are you sure?`,
+      text: " Do you Want to Sign Out??",
+      icon: "warning",
+      buttons: ["Oh noez!", "yup!"],
+      dangerMode: true,
+    }).then(willDelete => {
+      if (willDelete) {
+        auth.signOut();
+      } else {
+        return;
+      }
+    });
+  };
   return (
     <div className={Style.main_container}>
       <div
@@ -29,7 +52,11 @@ function Navbar() {
             <i className="fas fa-house-user">&nbsp;Home</i>
           </NavLink>
         </li>
-        <li>
+        {currentUser ? (
+          <li onClick={handleSignOut}>
+            <i class="fas fa-user-minus">&nbsp;SignOut</i>
+          </li>
+        ) : (
           <NavLink
             to="/signIn"
             exact
@@ -37,9 +64,11 @@ function Navbar() {
             activeClassName={Style.activelink}
           >
             {" "}
-            <i className="fas fa-user-lock">&nbsp;SignIn</i>
+            <li>
+              <i className="fas fa-user-lock">&nbsp;SignIn</i>
+            </li>
           </NavLink>
-        </li>
+        )}
 
         <li>
           <NavLink
@@ -48,12 +77,19 @@ function Navbar() {
             style={{ textDecoration: "none", color: "black" }}
             activeClassName={Style.activelink}
           >
-            <i className="fas fa-cart-plus">&nbsp;Cart</i>
+            <div className={Style.cart_icon}>
+              <ShoppingIcon className={Style.shopping_icon} />
+              <span className={Style.item_count}>0</span>
+            </div>
           </NavLink>
         </li>
       </ul>
     </div>
   );
 }
-
-export default Navbar;
+const mapStateToProps = state => {
+  return {
+    currentUser: state.CurrentUserReducer.currentUser,
+  };
+};
+export default connect(mapStateToProps)(Navbar);
