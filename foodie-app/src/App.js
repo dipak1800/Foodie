@@ -4,7 +4,7 @@ import { Switch, Route, Redirect } from "react-router-dom";
 import Navbar from "./Component/Navbar/Navbar";
 import Homepage from "./Pages/Homepage/Homepage";
 import ScrollToTopButton from "./Component/ScrollToTopButton/ScrollToTopButton";
-import UserCart from "./Pages/UserCartPage/UserCart";
+import CheckOutPage from "./Pages/CheckOutPage/CheckOut";
 import Page_Not_Found from "./Pages/PageNotFound/404_Page";
 import Sign_In from "./Pages/SignInPage/Sign_In";
 import RestaurantsPage from "./Pages/RestaurantsPage/Restaurants";
@@ -42,7 +42,7 @@ function App({ setCurrentUser, currentUser }) {
       <Navbar />
       <Switch>
         <Route path="/" exact component={Homepage} />
-        <Route path="/userCart" exact component={UserCart} />
+        <Route path="/userCart" exact component={CheckOutPage} />
         <Route path="/userQueryRestaurants" exact component={RestaurantsPage} />
         <Route
           path="/signIn"

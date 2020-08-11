@@ -157,3 +157,13 @@ form {
 .button2:hover {
   color: whitesmoke;
 }
+.modalButton {
+  padding: 8px;
+  margin-top: 15px;
+  cursor: pointer;
+  background-color: green;
+  color: whitesmoke;
+  &:hover {
+    color: black;
+  }
+}

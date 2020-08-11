@@ -5,9 +5,11 @@ import Footer from "../../Component/Footer/Footer";
 import { Link } from "react-router-dom";
 import { auth, signInWithGoogle } from "../../Firebase/Firebase.utils";
 import swal from "sweetalert";
+import Swal from "@sweetalert/with-react";
 function Sign_In() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [resetEmail, setResetEmail] = useState("");
   let handleSignIn = async e => {
     e.preventDefault();
     try {
@@ -40,6 +42,47 @@ function Sign_In() {
       button: "Aww yiss!",
     });
   };
+  let handleUserResponse = e => {
+    e.preventDefault();
+    auth
+      .sendPasswordResetEmail(resetEmail)
+      .then(() => {
+        swal("Password Link Sent!", "Please check your E-Mail!", "success");
+      })
+      .catch(err => {
+        alert(err.message + err.code);
+      });
+    Swal.close();
+  };
+
+  const handleForgotPassword = e => {
+    Swal({
+      // text: "Please Enter Your Valid E-mail Address",
+      buttons: {
+        cancel: "Close",
+      },
+      content: (
+        <div>
+          <h4>Please Enter Your Valid E-Mail Address</h4>
+          <form onSubmit={handleUserResponse}>
+            <input
+              onChange={e => setResetEmail(e.target.value)}
+              type="email"
+              name=""
+              id=""
+              // value={resetEmail}
+              required
+              placeholder="E-Mail"
+            />
+            <button className={Style.modalButton} type="submit">
+              Reset Password
+            </button>
+          </form>
+        </div>
+      ),
+    });
+  };
+
   return (
     <div className={Style.main_container}>
       <div className={Style.sub_container}>
@@ -86,7 +129,12 @@ function Sign_In() {
                   <span> Remember&nbsp;Me</span>
                 </div>
                 <div>
-                  <span className={Style.fogotPassword}>Forgot Password?</span>
+                  <span
+                    onClick={handleForgotPassword}
+                    className={Style.fogotPassword}
+                  >
+                    Forgot Password?
+                  </span>
                 </div>
               </div>
               <div className={Style.buttons}>
