@@ -9,6 +9,7 @@ import Page_Not_Found from "./Pages/PageNotFound/404_Page";
 import Sign_In from "./Pages/SignInPage/Sign_In";
 import RestaurantsPage from "./Pages/RestaurantsPage/Restaurants";
 import SignUpPage from "./Pages/SignUp_Page/SignUpPage";
+import UserDetailsPage from "./Pages/UserDetailsPage/UserDetails";
 import { connect } from "react-redux";
 import setCurrentUser from "./Redux/Actions/ActionsCreator/userAuthActionCreators";
 import { auth, createUserProfileDocument } from "./Firebase/Firebase.utils";
@@ -22,11 +23,14 @@ function App({ setCurrentUser, currentUser }) {
       if (userAuth) {
         const userRef = await createUserProfileDocument(userAuth);
         userRef.onSnapshot(snapShot => {
-          // console.log(snapShot.data());
-          setCurrentUser({
-            id: snapShot.id,
-            ...snapShot.data(),
-          });
+          // console.log(snapShot);
+          // console.log(snapShot.data() !== undefined);
+          if (snapShot.data() !== undefined) {
+            setCurrentUser({
+              id: snapShot.id,
+              ...snapShot.data(),
+            });
+          }
         });
       } else {
         setCurrentUser(userAuth);
@@ -49,6 +53,7 @@ function App({ setCurrentUser, currentUser }) {
           exact
           render={() => (currentUser ? <Redirect to="/" /> : <Sign_In />)}
         />
+        <Route path="/userDetails" exact component={UserDetailsPage} />
         <Route
           path="/signUp"
           exact

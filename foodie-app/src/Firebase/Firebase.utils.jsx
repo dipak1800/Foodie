@@ -18,7 +18,7 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
   const userRef = firestore.doc(`Users/${userAuth.uid}`);
   const snapShot = await userRef.get();
   //   console.log(snapShot);
-  if (!snapShot.exists) {
+  if (!snapShot.exists && userAuth.email !== null) {
     const { displayName, email } = userAuth;
     const createdAt = new Date();
     try {
@@ -36,7 +36,6 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
 };
 
 firebase.initializeApp(firebaseConfig);
-
 export const auth = firebase.auth(); //exporting because anywhere we can use it for authentication purpose
 export const firestore = firebase.firestore(); //same reason as above but for database
 const Provider = new firebase.auth.GoogleAuthProvider(); //gives access to google auth library
