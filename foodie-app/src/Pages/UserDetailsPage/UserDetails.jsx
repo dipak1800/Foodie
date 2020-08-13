@@ -3,20 +3,30 @@ import Style from "./UserDetails.module.scss";
 import Swal from "@sweetalert/with-react";
 import swal from "sweetalert";
 import firebase from "../../Firebase/Firebase.utils";
-function UserDetails({ history }) {
-  const [isDeliveryAddressProvided, setIsDeliveryAddressProvided] = useState(
-    false
-  );
-  const [isPhoneVerified, setIsPhoneVerified] = useState(false);
-
+import { connect } from "react-redux";
+import {
+  AddressProvided,
+  Phoneverified,
+} from "../../Redux/Actions/ActionsCreator/UserDetailsActionCreator";
+function UserDetails({
+  history,
+  isAddressProvided,
+  isPhoneVerified,
+  AddressProvided,
+  Phoneverified,
+}) {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [alternativePhone, setAlternativePhone] = useState("");
   const [address, setAddress] = useState("");
   const [location, setLocation] = useState("");
   const [landMark, setLandMark] = useState("");
-  console.log(name, phone, alternativePhone, address, location, landMark);
+  // console.log(name, phone, alternativePhone, address, location, landMark);
   const handlePhoneVerification = e => {
+    if (isPhoneVerified) {
+      alert("Your phone verification is completed.💹");
+      return;
+    }
     if (phone.length >= 13) {
       let recaptcha = new firebase.auth.RecaptchaVerifier("recaptcha", {
         size: "invisible",
@@ -31,7 +41,7 @@ function UserDetails({ history }) {
           e.confirm(code)
             .then(res => {
               console.log(res.user);
-              setIsPhoneVerified(true);
+              Phoneverified();
               alert("Number verified");
             })
             .catch(err => {
@@ -39,7 +49,7 @@ function UserDetails({ history }) {
             });
         });
     } else {
-      alert("invalid number,please follow placeholder");
+      alert("invalid number,please follow the placeholder");
     }
   };
 
@@ -47,7 +57,14 @@ function UserDetails({ history }) {
     e.preventDefault();
     if (isPhoneVerified) {
       swal("Response Saved!", "You are just one step away", "success");
-      setIsDeliveryAddressProvided(true);
+      AddressProvided(
+        name,
+        phone,
+        alternativePhone,
+        address,
+        landMark,
+        location
+      );
       history.push("/userCart");
     } else {
       swal("Invalid Number!", "Please verify your Phone Number", "warning");
@@ -144,4 +161,34 @@ function UserDetails({ history }) {
   );
 }
 
-export default UserDetails;
+const mapstateToProps = state => {
+  return {
+    isPhoneVerified: state.UserDetailsReducer.isPhoneVerified,
+    isAddressProvided: state.UserDetailsReducer.isAddressProvided,
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    Phoneverified: () => dispatch(Phoneverified()),
+    AddressProvided: (
+      name,
+      phone,
+      alternatephone,
+      address,
+      landmark,
+      location
+    ) =>
+      dispatch(
+        AddressProvided(
+          name,
+          phone,
+          alternatephone,
+          address,
+          landmark,
+          location
+        )
+      ),
+  };
+};
+export default connect(mapstateToProps, mapDispatchToProps)(UserDetails);
