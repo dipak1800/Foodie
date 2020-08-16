@@ -5,13 +5,17 @@ import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 import { BrowserRouter as Router } from "react-router-dom";
 import { Provider } from "react-redux";
-import ApplicationStore from "./Redux/GlobalStore/GlobalStore";
-
+import { PersistGate } from "redux-persist/integration/react";
+import ApplicationStore, { persistor } from "./Redux/GlobalStore/GlobalStore";
+// import "../node_modules/font-awesome/css/font-awesome.min.css";
+import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 ReactDOM.render(
   <React.StrictMode>
     <Router>
       <Provider store={ApplicationStore}>
-        <App />
+        <PersistGate persistor={persistor}>
+          <App />
+        </PersistGate>
       </Provider>
     </Router>
   </React.StrictMode>,

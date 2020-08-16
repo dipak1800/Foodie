@@ -1,7 +1,7 @@
 import React from "react";
 import Carousel from "react-elastic-carousel";
 import Item from "./Item";
-import "./style.css";
+import Style from "./Card.module.scss";
 import card6 from "../../Assets/Images/card6.jpg";
 import card2 from "../../Assets/Images/card2.png";
 import card3 from "../../Assets/Images/card3.jpg";
@@ -22,7 +22,7 @@ const breakPoints = [
 function Card() {
   return (
     <>
-      <div className="color">
+      <div className={Style.colorr}>
         <Carousel
           isRTL={true}
           enableAutoPlay
@@ -30,31 +30,31 @@ function Card() {
           breakPoints={breakPoints}
         >
           <Item>
-            <img src={card6} alt={card6} className="card" />
+            <img src={card6} alt={card6} className={Style.cardss} />
           </Item>
           <Item>
-            <img src={card9} alt={card9} className="card" />
+            <img src={card9} alt={card9} className={Style.cardss} />
           </Item>
           <Item>
-            <img src={card3} alt={card3} className="card" />
+            <img src={card3} alt={card3} className={Style.cardss} />
           </Item>
           <Item>
-            <img src={card4} alt={card4} className="card" />
+            <img src={card4} alt={card4} className={Style.cardss} />
           </Item>
           <Item>
-            <img src={card5} alt={card5} className="card" />
+            <img src={card5} alt={card5} className={Style.cardss} />
           </Item>
           <Item>
-            <img src={card1} alt={card1} className="card" />
+            <img src={card1} alt={card1} className={Style.cardss} />
           </Item>
           <Item>
-            <img src={card7} alt={card7} className="card" />
+            <img src={card7} alt={card7} className={Style.cardss} />
           </Item>
           <Item>
-            <img src={card8} alt={card8} className="card" />
+            <img src={card8} alt={card8} className={Style.cardss} />
           </Item>
           <Item>
-            <img src={card2} alt={card2} className="card" />
+            <img src={card2} alt={card2} className={Style.cardss} />
           </Item>
         </Carousel>
       </div>

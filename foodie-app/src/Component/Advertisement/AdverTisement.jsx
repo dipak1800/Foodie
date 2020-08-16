@@ -6,7 +6,7 @@ function Advertisement() {
     <div className={Style.advertisement}>
       <Typical
         loop={Infinity}
-        wrapper="h1"
+        wrapper="h2"
         steps={[
           "Welcome to _Food4Foodie_😍",
           3000,

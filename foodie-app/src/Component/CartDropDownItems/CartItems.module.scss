@@ -4,12 +4,14 @@
   height: 80px;
   margin-bottom: 15px;
 }
-img {
-  width: 30%;
-  height: 90%;
+.cuisineImage {
+  width: 35%;
+  height: 80%;
+  background-position: center;
+  background-size: cover;
 }
 .ItemsDetails {
-  margin: 0px;
+  margin-bottom: 10px;
   font-size: 12px;
   font-weight: bolder;
   width: 70%;

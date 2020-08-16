@@ -5,12 +5,14 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router";
 import Swal from "@sweetalert/with-react";
 import swal from "sweetalert";
+import getCardDetails from "../../Redux/Actions/ActionsCreator/UserCreditDetailsActionCreator";
 import firebase from "../../Firebase/Firebase.utils";
 function StripeButton({
   totalAmount,
   currentUser,
   history,
   isDeliveryAddressProvided,
+  getCardDetails,
 }) {
   const StripeTotalAmount = totalAmount * 100;
   const StripePublishKey =
@@ -19,12 +21,7 @@ function StripeButton({
   const onPaymentSuccess = token => {
     console.log(token);
     alert("Payment Succesfull");
-  };
-  const onPaymentClosed = token => {
-    if (token) {
-      return;
-    }
-    alert("Transaction Failed");
+    getCardDetails(token);
   };
 
   const handlePayments = e => {
@@ -36,13 +33,47 @@ function StripeButton({
       history.push("/userDetails");
     }
   };
-  return <div className={Style.StripeButton}>)}</div>;
+  return (
+    <div className={Style.StripeButton}>
+      {currentUser && isDeliveryAddressProvided ? (
+        <StripeCheckout
+          className={Style.stripe_button}
+          label="Go for Payment"
+          name="_Food4Foodie_"
+          billingAddress
+          shippingAddress
+          allowRememberMe
+          image="https://svgshare.com/i/Nbd.svg"
+          description={`You will have to pay ${totalAmount} rupees`}
+          amount={StripeTotalAmount}
+          panelLabel="Pay Now"
+          token={onPaymentSuccess}
+          stripeKey={StripePublishKey}
+          currency="INR"
+        />
+      ) : (
+        <button
+          onClick={handlePayments}
+          className={Style.duplicateStripeButton}
+        >
+          Go for Payment
+        </button>
+      )}
+    </div>
+  );
 }
 
+const mapDispatchToProps = dispatch => {
+  return {
+    getCardDetails: cardDetails => dispatch(getCardDetails(cardDetails)),
+  };
+};
 const mapStateToProps = state => {
   return {
     currentUser: state.CurrentUserReducer.currentUser,
     isDeliveryAddressProvided: state.UserDetailsReducer.isAddressProvided,
   };
 };
-export default withRouter(connect(mapStateToProps)(StripeButton));
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(StripeButton)
+);

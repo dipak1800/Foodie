@@ -11,6 +11,8 @@ import RestaurantsPage from "./Pages/RestaurantsPage/Restaurants";
 import SignUpPage from "./Pages/SignUp_Page/SignUpPage";
 import UserDetailsPage from "./Pages/UserDetailsPage/UserDetails";
 import { connect } from "react-redux";
+import Restaurant from "./Component/RestuarantHome/Restaurant";
+import AllRestaurants from "./Component/AllRestuarants/AllRestaurants";
 import setCurrentUser from "./Redux/Actions/ActionsCreator/userAuthActionCreators";
 import { auth, createUserProfileDocument } from "./Firebase/Firebase.utils";
 function App({ setCurrentUser, currentUser }) {
@@ -48,7 +50,8 @@ function App({ setCurrentUser, currentUser }) {
       <Switch>
         <Route path="/" exact component={Homepage} />
         <Route path="/userCart" exact component={CheckOutPage} />
-        <Route path="/userQueryRestaurants" exact component={RestaurantsPage} />
+        <Route path="/userQueryRestaurants" exact component={AllRestaurants} />
+        <Route path="/RestaurantHome" exact component={Restaurant} />
         <Route
           path="/signIn"
           exact

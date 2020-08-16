@@ -8,7 +8,12 @@ import { connect } from "react-redux";
 import CartDropDown from "../CartDropDown/CartDropDown";
 import toggle_DropDown from "../../Redux/Actions/ActionsCreator/CartDropDownActionCreator";
 import { ReactComponent as ShoppingIcon } from "../../Assets/Images/shopping-bag.svg";
-function Navbar({ currentUser, toggle_DropDown, ShowCartDropDown }) {
+function Navbar({
+  currentUser,
+  toggle_DropDown,
+  ShowCartDropDown,
+  totalItemsCount,
+}) {
   let handleSignOut = e => {
     swal({
       title: `Hey ${
@@ -28,6 +33,7 @@ function Navbar({ currentUser, toggle_DropDown, ShowCartDropDown }) {
       }
     });
   };
+
   return (
     <div className={Style.main_container}>
       <div
@@ -38,10 +44,10 @@ function Navbar({ currentUser, toggle_DropDown, ShowCartDropDown }) {
         }}
       >
         <img src={Logo} className={Style.logo} alt="LOGO" />
-        <h2 className={Style.logo1}>
+        <h4 className={Style.logo1}>
           _FOOD 4 FOODIE_
           <p className={Style.tagline}>Faster than you can imagine</p>
-        </h2>
+        </h4>
       </div>
       <ul className={Style.Navigation_list}>
         <li>
@@ -66,7 +72,7 @@ function Navbar({ currentUser, toggle_DropDown, ShowCartDropDown }) {
             activeClassName={Style.activelink}
           >
             {" "}
-            <li>
+            <li className={Style.except}>
               <i className="fas fa-user-lock">&nbsp;SignIn</i>
             </li>
           </NavLink>
@@ -75,7 +81,13 @@ function Navbar({ currentUser, toggle_DropDown, ShowCartDropDown }) {
         <li>
           <div onClick={toggle_DropDown} className={Style.cart_icon}>
             <ShoppingIcon className={Style.shopping_icon} />
-            <span className={Style.item_count}>0</span>
+            <span
+              className={
+                totalItemsCount ? Style.item_count : Style.no_item_count
+              }
+            >
+              {totalItemsCount}
+            </span>
           </div>
         </li>
       </ul>
@@ -92,6 +104,11 @@ const mapStateToProps = state => {
   return {
     currentUser: state.CurrentUserReducer.currentUser,
     ShowCartDropDown: state.CartDropDownReducer.ShowCartDropDown,
+    totalItemsCount: state.CartDropDownReducer.CartItems.reduce(
+      (accumulatedquantity, cartItem) =>
+        accumulatedquantity + cartItem.quantity,
+      0
+    ),
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Navbar);

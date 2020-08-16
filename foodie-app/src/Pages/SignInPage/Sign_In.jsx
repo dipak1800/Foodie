@@ -91,10 +91,10 @@ function Sign_In() {
             className={Style.showCase}
             style={{ backgroundImage: `url(${Pic})` }}
           >
-            <h1>
+            <h2 className={Style.brand}>
               _Food<b>4</b>Foodie_
-            </h1>
-            <h3>Always on Time</h3>
+            </h2>
+            <h4 className={Style.moto}>Always on Time</h4>
           </div>
         </div>
         <div className={Style.signInForm}>

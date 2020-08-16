@@ -42,8 +42,8 @@ function Footer() {
               <i style={{ fontSize: "45px" }} className="fab fa-apple"></i>
               &nbsp;&nbsp;&nbsp;&nbsp;
               <div className={Style.advertise}>
-                <p>Download on the</p>
-                <h4>App Store</h4>
+                <span className={Style.p}>Download on the</span>
+                <h4 className={Style.h4}>App Store</h4>
               </div>
             </div>
             <div className={Style.Applicaton}>
@@ -52,13 +52,13 @@ function Footer() {
                 className="fab fa-google-play"
               ></i>
               <div className={Style.advertise}>
-                <p>Get it On</p>
-                <h4>Google play</h4>
+                <span className={Style.p}>Get it On</span>
+                <h4 className={Style.h4}>Google play</h4>
               </div>
             </div>
           </div>
         </div>
-        <hr />
+        <div className={Style.isolate} />
         <h4 style={{ marginLeft: "85px" }} className={Style.heading}>
           We Deliver TO
         </h4>
@@ -100,7 +100,7 @@ function Footer() {
             <li>Sangli</li>
           </ul>
         </div>
-        <hr />
+        <div className={Style.isolate} />
         <div className={Style.Row2}>
           <div className={Style.footerCompany}>
             <img src={Logo} className={Style.logo} alt="LOGO" />

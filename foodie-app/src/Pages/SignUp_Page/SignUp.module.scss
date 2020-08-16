@@ -30,18 +30,18 @@
   justify-content: center;
   align-items: center;
 
-  h1 {
+  .brand {
     color: whitesmoke;
-    font-weight: 700;
+    font-weight: 600;
     font-family: Elephant;
     b {
       color: #ff5e5b;
       opacity: 800;
     }
   }
-  h3 {
+  .moto {
     color: whitesmoke;
-    font-weight: 500;
+    font-weight: 400;
     letter-spacing: 6px;
     margin-top: 10px;
   }
@@ -114,7 +114,8 @@ form {
 .else {
   color: grey;
   text-align: center;
-  margin-top: 10px;
+  margin-top: 20px;
+  margin-bottom: 0;
   b {
     color: black;
   }
@@ -125,7 +126,7 @@ form {
 }
 .option {
   text-align: center;
-  margin-top: 16px;
+  margin-top: 10px;
 }
 .button1 {
   background-color: #ff5e5b;
