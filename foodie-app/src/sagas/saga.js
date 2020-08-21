@@ -51,12 +51,21 @@ function* fetchCuisinesData(action) {
 
 function* fetchRestaurantsData(action) {
   const url = action.payload;
-  console.log("fetchCuisines: ", url);
+  const url1 = action.payload+"&start=21";
+  const url2 = action.payload+"&start=41";
+  const url3 = action.payload+"&start=61";
   yield put(actions.fetchRequest());
   try {
-    const response = yield call(() => axios.get(url, { headers: headers }));
-    const restaurants = response.data.restaurants.filter(
-      restaurants1 => restaurants1.restaurant.featured_image !== ""
+    const requrl = axios.get(url,{ headers: headers });
+    const requrl1 = axios.get(url1,{ headers: headers });
+    const requrl2 = axios.get(url2,{ headers: headers });
+    const requrl3 = axios.get(url3,{ headers: headers });
+    let arr=[];
+    const response = yield call(() => axios.all([requrl, requrl1, requrl2,requrl3]));
+    const response1 = Object.assign({},response.map(obj =>obj.data.restaurants));
+    const response2 = arr.concat(response1[0],response1[1],response1[2],response1[3]);
+    const restaurants = response2.filter(
+      data => data.restaurant.featured_image !== ""
     );
     yield put(actions.fetchRestaurantSuccess(restaurants));
   } catch (error) {

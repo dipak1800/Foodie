@@ -39,6 +39,7 @@ let ApplicationStore = createStore(
   persistReducer(persistConfig, AllReducers),
   composeWithDevTools(applyMiddleware(logger, sagaMiddleware))
 );
-export const persistor = persistStore(ApplicationStore);
 sagaMiddleware.run(watchActionsSaga);
+export const persistor = persistStore(ApplicationStore);
+
 export default ApplicationStore;

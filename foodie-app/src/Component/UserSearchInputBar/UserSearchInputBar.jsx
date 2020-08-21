@@ -1,23 +1,14 @@
 import Style from "./UserSearchInputBar.module.scss";
-import PlacesAutocomplete from "react-places-autocomplete";
 import React, { Component } from "react";
 import userQuery from "../../Redux/Actions/ActionsCreator/UserSearchActionCreators";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
+import { fetchPlaces } from "../../Redux";
 class UserSearchInputBar extends Component {
   state = {
     location_query: "",
     restaurant_query: "",
   };
-
-  // constructor(props) {
-  //   super(props);
-  //   this.state = { address: "" };
-  // }
-
-  // handleChange = address => {
-  //   this.setState({ address });
-  // };
 
   render() {
     const {
@@ -27,6 +18,8 @@ class UserSearchInputBar extends Component {
       userQuery,
       history,
       getRestaurantDetails,
+      onChangeHandle,
+      fetchPlaces
     } = this.props;
     const { location_query, restaurant_query } = this.state;
     return (
@@ -35,8 +28,14 @@ class UserSearchInputBar extends Component {
           className={Style.UserResponse}
           onSubmit={e => {
             e.preventDefault();
-            userQuery(location_query, restaurant_query);
-            history.push("/userQueryRestaurants");
+            const url = `https://developers.zomato.com/api/v2.1/locations?query=${location_query}`;
+            fetchPlaces(url);
+            // userQuery(location_query, restaurant_query);
+            // onChangeHandle(e.target.value);
+            setTimeout(() => {
+              history.push("/userQueryRestaurants");
+            }, 1000);
+            
           }}
         >
           <input
@@ -44,11 +43,13 @@ class UserSearchInputBar extends Component {
               e.target.name == "locationSearch"
                 ? this.setState({ location_query: e.target.value })
                 : this.setState({ restaurant_query: e.target.value });
+                // onChangeHandle(e.target.value);
             }}
             type={type}
             placeholder={placeholder}
             required
             name={name}
+            value={location_query}
           />
           <button type="sumbit">
             <i
@@ -58,51 +59,6 @@ class UserSearchInputBar extends Component {
           </button>
         </form>
       </div>
-
-      //   <PlacesAutocomplete
-      //     value={this.state.address}`
-      //     onChange={this.handleChange}
-      //     onSelect={this.handleSelect}
-      //   >
-      //     {({
-      //       getInputProps,
-      //       suggestions,
-      //       getSuggestionItemProps,
-      //       loading,
-      //     }) => (
-      //       <div>
-      //         <input
-      //           {...getInputProps({
-      //             placeholder: "Search Places ...",
-      //             className: "location-search-input",
-      //           })}
-      //         />
-      //         <div className="autocomplete-dropdown-container">
-      //           {loading && <div>Loading...</div>}
-      //           {suggestions.map(suggestion => {
-      //             const className = suggestion.active
-      //               ? "suggestion-item--active"
-      //               : "suggestion-item";
-      //             // inline style for demonstration purpose
-      //             const style = suggestion.active
-      //               ? { backgroundColor: "#fafafa", cursor: "pointer" }
-      //               : { backgroundColor: "#ffffff", cursor: "pointer" };
-      //             return (
-      //               <div
-      //                 {...getSuggestionItemProps(suggestion, {
-      //                   className,
-      //                   style,
-      //                 })}
-      //               >
-      //                 <span>{suggestion.description}</span>
-      //               </div>
-      //             );
-      //           })}
-      //         </div>
-      //       </div>
-      //     )}
-      //   </PlacesAutocomplete>
-      // </div>
     );
   }
 }
@@ -110,8 +66,11 @@ let mapDispatchToprops = dispatch => {
   return {
     userQuery: (locationquery, restaurantquery) =>
       dispatch(userQuery(locationquery, restaurantquery)),
+    fetchPlaces: url => dispatch(fetchPlaces(url)),
+
   };
 };
 export default withRouter(
   connect(null, mapDispatchToprops)(UserSearchInputBar)
 );
+

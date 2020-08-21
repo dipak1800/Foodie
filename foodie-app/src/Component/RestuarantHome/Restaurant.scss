@@ -1,11 +1,19 @@
-body {
-  font-family: "Sora", sans-serif;
-  margin: 0;
-}
 a {
   text-decoration: none !important;
 }
+.search-dish {
+  margin-top: 80px !important;
+}
 
+.sticky-top {
+  margin-top: 61px !important;
+}
+.recog {
+  margin: 21px 0;
+}
+.extra {
+  margin-top: 10px;
+}
 .r-box {
   height: auto;
   background-color: #282c3f;
@@ -28,6 +36,11 @@ a {
   width: 100%;
   height: auto;
 }
+@media (max-width: 640px) {
+  .r-img {
+    width: 100%;
+  }
+}
 .row {
   // text-align: center !important;
   margin: 0 !important;
@@ -41,12 +54,27 @@ a {
   width: 100%;
   text-align: center;
 }
+@media (max-width: 600px) {
+  .row .rtitle {
+    font-size: x-large;
+    width: 100%;
+    padding-left: 0px;
+  }
+  .row p {
+    font-size: large;
+  }
+}
 
 .rate-box {
   font-size: 13px;
 }
 .rate {
   border-left: solid 1px white;
+}
+@media (max-width: 600px) {
+  .row .rate-box {
+    font-size: large;
+  }
 }
 .cart-txt {
   color: #93959f;
@@ -130,15 +158,29 @@ div.rec a:hover {
   border-radius: 3px;
   text-align: center;
 }
+
 .colon {
   font-size: 21px;
   margin-bottom: 5px;
 }
 .r-img {
-  width: 90%;
+  width: 100%;
   height: 150px;
   background-size: cover;
   background-position: center;
+}
+@media (max-width: 600px) {
+  .container .search-dish {
+    .row .col-4 {
+      input {
+        widows: 250px;
+      }
+    }
+    .row {
+      display: flex;
+      flex-direction: row;
+    }
+  }
 }
 .AddButton {
   padding: 6px 20px;
@@ -159,5 +201,52 @@ div.rec a:hover {
   &:focus {
     border: none;
     outline: none;
+  }
+}
+.col-3 {
+  .row {
+    .vegimg {
+      margin-left: 0px;
+      height: 20px;
+      width: 20px;
+    }
+  }
+}
+
+@media (max-width: 600px) {
+  .row .menu {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    .col-4 {
+      .row {
+        img {
+          width: 190px;
+
+          margin-left: 0%;
+        }
+      }
+      .row {
+        button {
+          margin-left: 0%;
+        }
+      }
+    }
+    .col-3 {
+      .row {
+        h6 {
+          font-size: large;
+        }
+      }
+      .price {
+        font-size: large;
+      }
+      // .menu-detail{
+      //   margin-right: 0;
+      //   width: 100%;
+      //   color: black;
+      //   font-size: large;
+      // }
+    }
   }
 }

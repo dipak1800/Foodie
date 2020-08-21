@@ -1,10 +1,19 @@
 import React from "react";
 import Style from "./Advertisement.module.scss";
-import Typical from "react-typical";
+// import Typical from "react-typical";
+
+import AwesomeSlider from "react-awesome-slider";
+import "react-awesome-slider/dist/styles.css";
+import "react-awesome-slider/dist/captioned.css";
+import withAutoplay from "react-awesome-slider/dist/autoplay";
+import CoreStyles from "react-awesome-slider/src/core/styles.scss";
+import AnimationStyles from "react-awesome-slider/src/styled/fold-out-animation/fold-out-animation.scss";
+
 function Advertisement() {
+  const AutoplaySlider = withAutoplay(AwesomeSlider);
   return (
     <div className={Style.advertisement}>
-      <Typical
+      {/* <Typical
         loop={Infinity}
         wrapper="h2"
         steps={[
@@ -29,7 +38,27 @@ function Advertisement() {
           " Craving something 🌭???",
           2000,
         ]}
-      />
+      /> */}
+      <AutoplaySlider
+        // transitionDelay={8000}
+        play={true}
+        cancelOnInteraction={false} // should stop playing on user interaction
+        interval={2500}
+        buttons={false}
+        bullets={false}
+        className={Style.advertisement}
+      >
+        <div>Welcome to _Food4Foodie_😍</div>
+        <div>Hungry ✋???</div>
+        <div>UnExpected Guests 👪???</div>
+        <div>Cooking Gone Wrong 🍚???</div>
+        <div>Party Night 🎉???</div>
+        <div>Late Night at Office 🏤???</div>
+        <div>Watching Movie 🎥???</div>
+        <div>Need Diet Food 💪 ???</div>
+        <div>Want to Eat Chinese 🍲???</div>
+        <div>Craving something 🌭???</div>
+      </AutoplaySlider>
     </div>
   );
 }

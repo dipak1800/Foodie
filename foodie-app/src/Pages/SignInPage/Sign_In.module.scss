@@ -1,15 +1,19 @@
 .main_container {
   width: 100%;
-  height: 100%;
-  margin-top: 110px;
+  height: 800px;
+  // margin-top: 110px;
+  padding-top: 70px;
+  background: linear-gradient(168deg, white 50%, rgb(230, 230, 224) 50%);
 }
 .sub_container {
   width: 52%;
-  height: 80%;
+  height: 460px;
   margin: auto;
   display: flex;
   justify-content: space-between;
   margin-top: 50px;
+  margin-bottom: 50px;
+  background-color: white;
 }
 .branding {
   width: 40%;
@@ -165,5 +169,93 @@ form {
   color: whitesmoke;
   &:hover {
     color: black;
+  }
+}
+
+@media (max-width: 990px) {
+  .branding {
+    display: block;
+    height: 540px;
+  }
+
+  .sub_container {
+    width: 80%;
+    height: 540px;
+    // margin: auto;
+    // display: flex;
+    // justify-content: space-between;
+    margin-top: 40px;
+    margin-bottom: 50px;
+    // margin-left: 90px;
+    background-color: white;
+  }
+  .signInForm {
+    width: 100%;
+    height: 540px;
+    border: 1px solid grey;
+  }
+}
+
+@media (max-width: 800px) {
+  .branding {
+    display: none;
+  }
+
+  .main_container {
+    width: 100%;
+    height: 800px;
+    // margin-top: 110px;
+    padding-top: 70px;
+    background-color: white;
+  }
+
+  .sub_container {
+    width: 70%;
+    height: 540px;
+    // margin: auto;
+    // display: flex;
+    // justify-content: space-between;
+    margin-top: 40px;
+    margin-bottom: 50px;
+    // margin-left: 90px;
+    background-color: white;
+  }
+  .signInForm {
+    width: 100%;
+    height: 540px;
+    border: 1px solid grey;
+  }
+  .button1 {
+    width: 310px;
+    height: 40px;
+    cursor: pointer;
+    font-size: 15px;
+    letter-spacing: 1px;
+  }
+}
+
+@media (max-width: 600px) {
+  .branding {
+    // opacity: 0;
+    // visibility: hidden;
+    // display: block;
+    display: none;
+  }
+  .sub_container {
+    width: 100%;
+    height: 540px;
+    // margin: auto;
+    // display: flex;
+    // justify-content: space-between;
+    margin-top: 40px;
+    margin-bottom: 50px;
+    // margin-left: 90px;
+    background-color: white;
+  }
+
+  .signInForm {
+    width: 100%;
+    height: 540px;
+    border: 1px solid grey;
   }
 }

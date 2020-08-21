@@ -1,21 +1,26 @@
-import "./FilterSidebar.scss";
+import Style from "./FilterSidebar.module.scss";
+import cx from 'classnames'
 import Sidebar from "../Sidebar";
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { fetchCuisines } from "../../../Redux";
 
+const CheckBox = props => {
+  return (
+    <li>
+     <input key={props.id} onChange={props.handleCheckChieldElement} type="checkbox" checked={props.isChecked} value={props.value} name={props.name} /> {props.name}
+    </li>
+  )
+}
+
 function FilterSideBar({ userData, fetchCuisines, onFilters }) {
   const [search, setSearch] = useState("");
   const [filterCheckBoxes, setFilterCheckBoxes] = useState();
-  // const [filterCheck,setFilterCheck] = useState();
-
-  const url = `https://developers.zomato.com/api/v2.1/cuisines?city_id=${userData.entityId}`;
-
-  const Preference = [
+  const [Preference, setPreference] = useState([
     { id: 1, name: "Veg", value: "veg", isChecked: false },
     { id: 2, name: "Non-Veg", value: "nonveg", isChecked: false },
-  ];
-  const sort = [
+  ]);
+  const [sort, setSort] = useState([
     {
       id: 3,
       name: "Popularity - high to low",
@@ -40,118 +45,123 @@ function FilterSideBar({ userData, fetchCuisines, onFilters }) {
       value: "sort=cost&amp;order=asc",
       isChecked: false,
     },
-  ];
+  ]);
+  
+  const cuisines = userData.cuisines && userData.cuisines!==[] && Object.assign([],userData.cuisines.map(data =>(
+    {id: data.cuisine.cuisine_id, name:data.cuisine.cuisine_name, value: data.cuisine.cuisine_id, isChecked: false})));
+
+  const [filteredCuisines, setFilteredCuisines] = useState(cuisines);
+
+  const url = `https://developers.zomato.com/api/v2.1/cuisines?city_id=${userData.entityId}`;
 
   useEffect(() => {
-    fetchCuisines(url);
+      fetchCuisines(url);
   }, []);
 
-  // const cuisines=[ userData.cuisines !==[] &&  userData.cuisines.filter(data => {
-  //   return ({id: data.cuisine.cuisine_id, name:data.cuisine.cuisine_name, value: data.cuisine.cuisine_id, isChecked: false})
-  // })]
-
-  const filteredCuisines = userData.cuisines.filter(data => {
-    return (
-      data.cuisine.cuisine_name.toLowerCase().indexOf(search.toLowerCase()) !==
-      -1
-    );
-  });
-
-  const onChange = e => {
-    setSearch(e.target.value);
-  };
-
   const onFilterChange = e => {
-    const name = e.target.name;
-    const id = e.target.value;
+    let name,id,checked;
+    // console.log(e);
+    if (e !== undefined){
+      name = e.target.name;
+      id = e.target.value;
+      checked =e.target.checked;
+    }
+    let fruites = Preference
+    fruites.forEach(fruite => {
+       if (fruite.value === id)
+          fruite.isChecked =  checked
+    })
+    setPreference(Preference)
+
+    let sortby = sort
+    sortby.forEach(fruite => {
+       if (fruite.value === id)
+          fruite.isChecked =  checked
+    })
+    setSort(sortby)
+    
+    let cusineCheck = filteredCuisines
+    cusineCheck.forEach(obj => {
+       if (obj.name === name)
+          obj.isChecked =  checked
+    })
+    setFilteredCuisines(cusineCheck)
+
     let updatedFilterbox = Object.assign({}, filterCheckBoxes, { [name]: id });
     setFilterCheckBoxes(updatedFilterbox);
   };
 
-  const handleAllChecked = () => {
-    // filterCheckBoxes.forEach(filter => filter.isChecked = false)
+  const handleAllChecked = e => {
+    let fruites = Preference
+    fruites.forEach(fruite => fruite.isChecked = false)
+    setPreference(Preference)
+
+    let sortby = sort
+    sortby.forEach(filter => filter.isChecked = false)
+    setSort(sortby)
+    
+    let cusineCheck = filteredCuisines
+    cusineCheck.forEach(filter => filter.isChecked = false)
+    setFilteredCuisines(cusineCheck)
   };
 
   const onSubmit = e => {
     onFilters(filterCheckBoxes);
   };
 
+  const onChange = e => {
+    setSearch(e.target.value);
+    setFilteredCuisines(cuisines.filter(data => {
+      return (
+        data.name.toLowerCase().indexOf(search.toLowerCase()) !==
+        -1
+      )
+    }));
+  };
+
   return (
-    <Sidebar width={300} height={"100vh"}>
-      <p className={"p"}>Preference</p>
-      <ul className="ul">
-        {Preference.map(data => (
-          <li key={data.id}>
-            <input
-              style={{ cursor: "pointer" }}
-              className={"inputs"}
-              type="checkbox"
-              name={data.name}
-              value={data.value}
-              onChange={onFilterChange}
-              checked={data.isChecked}
-            />
-            {data.name}
-          </li>
-        ))}
+    <Sidebar width={300} height={"100vh"} >
+      <div className={Style.main} >
+      <p className={Style.p}>Preference</p>
+      <ul className={Style.ul}>
+        {
+          Preference.map((fruite) => {
+            return (<CheckBox key={fruite.id} handleCheckChieldElement={onFilterChange}  {...fruite} />)
+          })
+        }
       </ul>
-      <p className="p">Cuisines</p>
+      <p className={Style.p}>Cuisines</p>
       <input
-        className="filter inputs"
+        className={cx(Style.filter,Style.inputs)}
         type="text"
         name="query"
         onChange={onChange}
         value={search}
-        // autoComplete="off"
         placeholder="Search Cuisines"
       />
-      <ul className="cuisines">
-        {/* {cuisines.map(data => 
-        <li key={data.id}>
-          <input type="checkbox" name={data.name} value={data.value} onChange={onFilterChange} checked={data.isChecked}/>
-          {data.name}
-          </li>
-        )} */}
-
-        {userData.cuisines !== [] &&
-          filteredCuisines.map(data => (
-            <li key={data.cuisine.cuisine_id}>
-              <input
-                className={"inputs"}
-                type="checkbox"
-                style={{ cursor: "pointer" }}
-                name={data.cuisine.cuisine_name}
-                value={data.cuisine.cuisine_id}
-                onChange={onFilterChange}
-              />
-              {data.cuisine.cuisine_name}
-            </li>
-          ))}
+      <ul className={cx(Style.ul,Style.cuisines)}>
+        {
+         cuisines && filteredCuisines!==[] && filteredCuisines.map((fruite) => {
+            return (<CheckBox key={fruite.id} handleCheckChieldElement={onFilterChange}  {...fruite} />)
+          })
+        }
       </ul>
-      <p className={"p"}>Sort By</p>
-      <ul className="ul">
-        {sort.map(data => (
-          <li key={data.id}>
-            <input
-              className={"inputs"}
-              type="checkbox"
-              style={{ cursor: "pointer" }}
-              name={data.name}
-              value={data.value}
-              onChange={onFilterChange}
-              checked={data.isChecked}
-            />
-            {data.name}
-          </li>
-        ))}
+      <p className={Style.p}>Sort By</p>
+      <ul className={Style.ul}>
+        {
+          sort.map((fruite) => {
+            return (<CheckBox key={fruite.id} handleCheckChieldElement={onFilterChange}  {...fruite} />)
+          })
+        }
       </ul>
-      <div className="filterBottom">
-        <button className="btn btn-primary" onClick={handleAllChecked}>
+      <div className={Style.filterBottom}>
+        <button className="btn btn-primary" onClick={(e)=>{handleAllChecked(e);onFilterChange(e)}}>
           Clear
         </button>
         <button className="btn btn-primary" onClick={onSubmit}>
           Apply
         </button>
+      </div>
       </div>
     </Sidebar>
   );

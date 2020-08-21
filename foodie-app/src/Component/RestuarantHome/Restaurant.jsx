@@ -22,7 +22,7 @@ function RestaurantHome({ userData, add_Item }) {
     user_rating,
     cuisines,
     all_reviews_count,
-  } = userData.restaurantData;
+  } = userData.restaurantData && userData.restaurantData;
   const address = location ? location.address : "";
   const aggregate_rating = user_rating ? user_rating.aggregate_rating : "";
 
@@ -59,9 +59,11 @@ function RestaurantHome({ userData, add_Item }) {
           <div className="col-6">
             <div className="row">
               <h1 className="rtitle">{name}</h1>
-              <p>{cuisines}</p>
+              <p style={{ width: "100%", textAlign: "center" }}>{cuisines}</p>
               <br />
-              <p>{address}</p>
+              <p style={{ width: "100%", textAlign: "center" }}>
+                {address.slice(0, 85)}
+              </p>
             </div>
             <div className="row rate-box">
               <div className="col ">
@@ -73,7 +75,9 @@ function RestaurantHome({ userData, add_Item }) {
                 </div>
               </div>
               <div className="col rate ">
-                <div className="row justify-content-center">{timings}</div>
+                <div className="row justify-content-center">
+                  {timings.slice(0, 44)}
+                </div>
                 <div className="row justify-content-center">Timing</div>
               </div>
             </div>
@@ -93,7 +97,7 @@ function RestaurantHome({ userData, add_Item }) {
         </div>
       </div>
 
-      <div className="container search-dish">
+      <div className={`container extra ${ShowCartDropDown && "search-dish"}`}>
         <div className="row">
           <div className="col-4">
             <input
@@ -110,12 +114,12 @@ function RestaurantHome({ userData, add_Item }) {
                 <input type="checkbox" />
               </div>
               <div className="col-8 ">
-                <i class="fas fa-leaf"></i>Veg
+                <i className="fas fa-leaf"></i>Veg
               </div>
             </div>
           </div>
           <div className="col-2">
-            <i class="far fa-heart"></i>Favourite
+            <i className="far fa-heart"></i>Favourite
           </div>
         </div>
       </div>
@@ -128,24 +132,24 @@ function RestaurantHome({ userData, add_Item }) {
           </h6>
         </div>
         <div className="row">
-          <div className="col left-bar ">
+          <div className="col left-bar  ">
             <div>
               <h6 className="rec-text"> Recommended</h6>
             </div>
-            <div className=" rec">
-              <a href=""> Healthylicious</a>
+            <div className=" rec recog">
+              <span href=""> Healthylicious</span>
             </div>
-            <div className=" rec">
-              <a href=""> Fruitylicious (Fruit Icecreams)</a>
+            <div className=" rec  recog">
+              <span href=""> Fruitylicious (Fruit Icecreams)</span>
             </div>
-            <div className=" rec">
-              <a href=""> Nuttylicious (Dry Fruit Icecreams)</a>
+            <div className=" rec  recog">
+              <span href=""> Nuttylicious (Dry Fruit Icecreams)</span>
             </div>
-            <div className=" rec">
-              <a href=""> Kulfilicious (Kulfis)</a>
+            <div className=" rec  recog">
+              <span href=""> Kulfilicious (Kulfis)</span>
             </div>
-            <div className=" rec">
-              <a href=""> Recommended</a>
+            <div className=" rec  recog">
+              <span href=""> Recommended</span>
             </div>
           </div>
 
@@ -153,7 +157,7 @@ function RestaurantHome({ userData, add_Item }) {
             {filteredMenu &&
               filteredMenu.map(data => (
                 <div className="row menu" key={data.id}>
-                  <div class="col-4">
+                  <div className="col-4">
                     <div className="row">
                       <img src={data.imageUrl} alt="img" />
                     </div>

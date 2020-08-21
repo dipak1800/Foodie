@@ -6,7 +6,8 @@ import {
   FETCH_DAILY_MENU_SUCCESS,
   FETCH_FAILURE,
   SET_SEARCH,
-  SET_CHANGE
+  SET_CHANGE,
+  SET_XPOSITION
 } from './userTypes'
 
 const initialState = {
@@ -21,75 +22,90 @@ const initialState = {
   places:[],
   restaurantData:[],
   dailyMenu:[],
-  error: ''
+  error: '',
 }
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case FETCH_REQUEST:
-      return {
+      state = {
         ...state,
         loading: true
       }
+      break;
     case SET_SEARCH:
-      return {
+      console.log(action.payload[0]);
+      state = {
         ...state,
         searchAction:true,
+        places:action.payload,
+        entityId:action.payload[0].entity_id,
+        entityType:action.payload[0].entity_type,
+        locationTitle:action.payload[0].title,
+        country:action.payload[0].country_name,
+      }
+      break;
+    case SET_CHANGE:
+      state = {
+        ...state,
+        // searchAction:true,
         // entityId:action.payload.entity_id,
         // entityType:action.payload.entity_type,
         // locationTitle:action.payload.title,
         // country:action.payload.country_name,
-        places:action.payload
-      }
-    case SET_CHANGE:
-      return {
-        ...state,
-        // searchAction:true,
-        entityId:action.payload.entity_id,
-        entityType:action.payload.entity_type,
-        locationTitle:action.payload.title,
-        country:action.payload.country_name,
         // places:action.payload
       }
+      break;
+    case SET_XPOSITION:
+      state = {
+        ...state,
+        xPosition: action.payload
+      }
+      break;
     case FETCH_CUISINES_SUCCESS:
-      return {
+      state = {
         ...state,
         searchAction:false,
         loading: false,
         cuisines: action.payload,
         error: ''
       }
+      break;
     case FETCH_RESTAURANTS_SUCCESS:
-      return {
+      state = {
         ...state,
         searchAction:false,
         loading: false,
         restaurants: action.payload,
         error: ''
       }
+      break;
     case FETCH_RESTUARANT_DATA_SUCCESS:
-      return {
+      state = {
         ...state,
         loading: false,
         restaurantData: action.payload,
         error: ''
       }
+      break;
     case FETCH_DAILY_MENU_SUCCESS:
-      return {
+      state = {
       ...state,
       loading: false,
       dailyMenu: action.payload,
       error: ''
     }
+    break;
     case FETCH_FAILURE:
-      return {
+      state = {
         ...state,
         loading: false,
         cuisines: [],
         error: action.payload
       }
-    default: return state
+    break;
   }
+  return state;
 }
 
 export default reducer

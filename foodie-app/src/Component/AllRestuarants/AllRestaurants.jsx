@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
+import cx from 'classnames'
 import FoodCard from "../FoodCard/Foodcards";
 import FilterSidebar from "../Sidebar/FilterSidebar/FilterSideBar";
-import "./AllRestaurants.scss";
+import Style from "./AllRestaurants.module.scss";
 import { connect } from "react-redux";
 import {
   fetchRestaurants,
   fetchRestaurantData,
-  fetchDailyMenu,
+  setXPosition
 } from "../../Redux";
 import { useHistory } from "react-router";
 
@@ -14,20 +15,29 @@ function AllRestaurants({
   userData,
   fetchRestaurants,
   fetchRestaurantData,
-  fetchDailyMenu,
+  setXPosition
 }) {
+  const [search, setSearch] = useState("");
   const [url, setUrl] = useState(
     `https://developers.zomato.com/api/v2.1/search?entity_id=${userData.entityId}&entity_type=${userData.entityType}&sort=rating&order=asc`
   );
   const history = useHistory();
+  
+  const [width,setWidth] = useState(-600);
+  // const [xPosition, setX] = useState(600);
 
+  const toggleMenu = () => {
+    if (userData.xPosition >= 0) {
+      setXPosition(width);
+    } else {
+      setXPosition(0);
+    }
+  };
+  
   useEffect(() => {
-    // setUrl(qurl)
-    // setTimeout(() => {
-    //   fetchRestaurants(qurl)
-    // }, 3000)
     fetchRestaurants(url);
-  }, []);
+    setXPosition(0);
+  },[]);
 
   const other = [
     "Veg",
@@ -87,38 +97,55 @@ function AllRestaurants({
   const handleClick = id => {
     console.log("id: ", id);
     fetchRestaurantData(id);
-    fetchDailyMenu(id);
+    // fetchDailyMenu(id);
     history.push("/RestaurantHome");
   };
 
+  const onChange = e => {
+    setSearch(e.target.value);
+  };
+
+  const filteredRestuarant = userData.restaurants && userData.restaurants!==[] && userData.restaurants.filter(data => {
+    return (
+      data.restaurant.name.toLowerCase().indexOf(search.toLowerCase()) !==
+      -1
+    );
+  });
+
   return (
-    <div className="main">
-      <FilterSidebar onFilters={onFilter} />
-      <div className="filterhead">
-        {/* <button
-          // onClick={() => toggleMenu()}
-          className="toggle-menu"
-          // style={{
-          //   transform: `translate(${width}px)`
-          // }}
+    <div className={Style.main}>
+      <FilterSidebar onFilters={onFilter}  />
+      <div className={Style.filterhead}>
+        <button
+          onClick={() => toggleMenu()}
+          className={Style.toggleMenu}
         >
-          <i class="fa fa-sliders" aria-hidden="true"></i>
-        </button> */}
-        <div className="span1">
+          <i className="fa fa-sliders" aria-hidden="true"></i>
+        </button>
+        <div className={Style.span1}>
           <button onClick={handleHeaderFilter}>Relevance</button>
           <button onClick={handleHeaderFilter}>Cost For Two</button>
           <button onClick={handleHeaderFilter}>Rating</button>
         </div>
-        <span>
-          <b className={"topPick"}>Top Pick</b>
+        <span  className={Style.topPick}>
+          <b>Top Pick</b>
         </span>
+        <input
+            className={cx(Style.filter, Style.inputs)}
+            type="text"
+            name="query"
+            onChange={onChange}
+            value={search}
+            // autoComplete="off"
+            placeholder="Search Restaurant by Name"
+          />
       </div>
       <hr />
-      <div className="foodCards">
+      <div className={Style.foodCards}>
         {userData &&
           userData.restaurants &&
-          userData.restaurants.map(data => (
-            <FoodCard key={data.id} recipe={data} handleClick={handleClick} />
+          filteredRestuarant.map(data => (
+            <FoodCard key={data.restaurant.id} recipe={data} handleClick={handleClick} />
           ))}
       </div>
     </div>
@@ -135,7 +162,7 @@ const mapDispatchToProps = dispatch => {
   return {
     fetchRestaurants: url => dispatch(fetchRestaurants(url)),
     fetchRestaurantData: id => dispatch(fetchRestaurantData(id)),
-    fetchDailyMenu: id => dispatch(fetchDailyMenu(id)),
+    setXPosition: x => dispatch(setXPosition(x)),
   };
 };
 

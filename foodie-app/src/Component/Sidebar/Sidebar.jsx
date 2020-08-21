@@ -1,7 +1,8 @@
-import "./Sidebar.scss";
+import Style from "./Sidebar.module.scss";
 import React from "react";
+import { connect } from "react-redux";
 
-const Sidebar = ({ width, height, children }) => {
+const Sidebar = ({ width, height, children,userData }) => {
   // const [xPosition, setX] = React.useState(-width);
 
   // const toggleMenu = () => {
@@ -15,19 +16,35 @@ const Sidebar = ({ width, height, children }) => {
   // React.useEffect(() => {
   //   setX(-width);
   // }, []);
+  
   return (
     <React.Fragment>
-      <div className="side-bar"
-        // style={{
-        //   transform: `translatex(${xPosition}px)`,
-        //   width: width,
-        //   minHeight: height
-        // }}
+      <div className={Style.sideBar}
+        style={{
+          transform: `translatex(${userData.xPosition}px)`,
+          // width: width,
+          // minHeight: height
+        }}
       >
-        <div className="content">{children}</div>
+        {/* <button
+          onClick={() => toggleMenu()}
+          className={Style.toggleMenu}
+        >
+          <i class="fa fa-sliders" aria-hidden="true"></i>
+        </button> */}
+
+        <div className={Style.content}>{children}</div>
       </div>
     </React.Fragment>
   );
 };
 
-export default Sidebar;
+// export default ;
+
+const mapStateToProps = state => {
+  return {
+    userData: state.user,
+  };
+};
+
+export default connect(mapStateToProps, null)(Sidebar);
